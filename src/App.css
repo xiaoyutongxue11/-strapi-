@@ -1,0 +1,12 @@
+.app{
+    width: 300px;
+    height: 300px;
+    margin: 50px auto;
+    text-align: center;
+    background-color: rgb(0, 255, 149);
+}
+.app button{
+    width: 100px;
+    font-size: 40px;
+    margin: 0 20px;
+}
