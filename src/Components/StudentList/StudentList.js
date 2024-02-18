@@ -1,5 +1,6 @@
 import React from "react";
 import Student from "./Student/Student";
+import AddForm from "../AddForm/AddForm";
 const StudentList = (props) => {
   return (
     <table>
@@ -18,6 +19,9 @@ const StudentList = (props) => {
           <Student key={stu.id} stu={stu} />
         ))}
       </tbody>
+      <tfoot>
+        <AddForm />
+      </tfoot>
     </table>
   );
 };
