@@ -3,46 +3,38 @@ import classes from "./Student.module.css";
 import { useCallback, useState } from "react";
 import StuContext from "../../../store/StuContext";
 import { useContext } from "react";
-const Student = ({
-  stu: {
-    id,
-    attributes: { name, gender, age, address },
-  },
-}) => {
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+import AddForm from "../../AddForm/AddForm";
+import useFetch from "../../../hooks/useFetch";
+const Student = ({ stu: { id, attributes } }) => {
+  const { name, gender, age, address } = attributes;
+  const [isEdit, setIsEdit] = useState(false);
   const stuCtx = useContext(StuContext);
-  const delStudent = useCallback(async () => {
-    try {
-      setLoading(true);
-      setError(null);
-      const res = await fetch(`http://localhost:1337/api/students/${id}`, {
-        method: "delete",
-      });
-      if (!res.ok) {
-        throw new Error("删除失败");
-      }
-      stuCtx.fetchData();
-    } catch (e) {
-      setError(e);
-    } finally {
-      setLoading(false);
-    }
-  }, []);
+  const {
+    loading,
+    error,
+    fetchData: delStudent,
+  } = useFetch({ url: `/students/${id}`, method: "delete" }, stuCtx.fetchData);
   const delStuHandler = () => {
     delStudent();
   };
+  const cancelEdit = () => {
+    setIsEdit(false);
+  };
   return (
     <>
-      <tr>
-        <td>{name}</td>
-        <td>{gender}</td>
-        <td>{age}</td>
-        <td>{address}</td>
-        <td>
-          <button onClick={delStuHandler}>删除</button>
-        </td>
-      </tr>
+      {!isEdit && (
+        <tr>
+          <td>{name}</td>
+          <td>{gender}</td>
+          <td>{age}</td>
+          <td>{address}</td>
+          <td>
+            <button onClick={delStuHandler}>删除</button>
+            <button onClick={() => setIsEdit(true)}>修改</button>
+          </td>
+        </tr>
+      )}
+      {isEdit && <AddForm stuId={id} stu={attributes} onCancel={cancelEdit} />}
       {loading && (
         <tr>
           <td colSpan={5}>删除中</td>
