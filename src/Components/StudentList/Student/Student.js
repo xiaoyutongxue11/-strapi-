@@ -12,7 +12,7 @@ const Student = ({
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const stuCtx = useContext(StuContext);
-  const delStu = useCallback(async () => {
+  const delStudent = useCallback(async () => {
     try {
       setLoading(true);
       setError(null);
@@ -29,6 +29,9 @@ const Student = ({
       setLoading(false);
     }
   }, []);
+  const delStuHandler = () => {
+    delStudent();
+  };
   return (
     <>
       <tr>
@@ -37,7 +40,7 @@ const Student = ({
         <td>{age}</td>
         <td>{address}</td>
         <td>
-          <button onClick={delStu}>删除</button>
+          <button onClick={delStuHandler}>删除</button>
         </td>
       </tr>
       {loading && (
